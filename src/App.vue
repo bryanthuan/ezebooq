@@ -13,16 +13,8 @@
 </template>
 
 <script>
-  // import Firebase from './firebase'
   import FastClick from 'fastclick'
-  // import database from './database'
-  // import auth from './auth'
-  // import { firebaseConfig } from './configs'
-  // const user = auth.getUser()
   const initApp = function initApp () {
-    // firebase.initializeApp(firebaseConfig)
-    // database.init()
-    // auth.init()
     if ('addEventListener' in document) {
       document.addEventListener('DOMContentLoaded', () => {
         FastClick.attach(document.body)
