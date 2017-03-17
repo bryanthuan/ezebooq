@@ -1,0 +1,38 @@
+// http://eslint.org/docs/user-guide/configuring
+
+module.exports = {
+  root: true,
+  parser: 'babel-eslint',
+  parserOptions: {
+    sourceType: 'module'
+  },
+  env: {
+    browser: true,
+  },
+  "globals": {
+    "$": true,
+    "_App": true   
+  },
+  // https://github.com/feross/standard/blob/master/RULES.md#javascript-standard-style
+  extends: 'vue',
+  // required to lint *.vue files
+  plugins: [
+    'vue','flowtype'
+  ],  
+  // add your custom rules here
+  'rules': {
+    // allow paren-less arrow functions
+    'arrow-parens': 0,
+    // allow async-await
+    'generator-star-spacing': 0,
+    // allow object-curly-spacing
+    'object-curly-spacing': 0,
+    // allow camelcase
+    'camelcase': 0,
+    // allow debugger during development
+    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    "flowtype/define-flow-type": 1,
+    "flowtype/use-flow-type": 1,
+    "flowtype/valid-syntax": 1
+  }
+}

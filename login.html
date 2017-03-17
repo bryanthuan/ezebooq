@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eezii Login</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet" type="text/css">
+
+    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet" type="text/css">
+
+    <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyBzZaFyN15RQTQpL_KWYPruUEera45EsBM",
+        authDomain: "quickstart-41946.firebaseapp.com",
+        databaseURL: "https://quickstart-41946.firebaseio.com",
+        storageBucket: "quickstart-41946.appspot.com",
+        messagingSenderId: "776746405097"
+      };
+      firebase.initializeApp(config);
+    </script>
+
+    <script src="https://cdn.firebase.com/libs/firebaseui/1.0.0/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/1.0.0/firebaseui.css" />
+    <script type="text/javascript">
+      initApp = function () {
+        firebase.auth().onAuthStateChanged(function (user) {
+          if (user) {
+            // User is signed in.
+            window.location.href = '/wizard/select-category';
+          } else {
+            // User is signed out.
+          }
+        }, function (error) {
+          console.log(error);
+        });
+      };
+      window.addEventListener('load', function () {
+        initApp()
+      });
+      // FirebaseUI config.
+      var uiConfig = {
+        signInSuccessUrl: '/wizard/select-category',
+        signInOptions: [
+          // Leave the lines as is for the providers you want to offer your users.
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+          // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+          // Brifirebase.auth.GithubAuthProvider.PROVIDER_ID,
+          firebase.auth.EmailAuthProvider.PROVIDER_ID
+        ],
+        // Terms of service url.
+        tosUrl: '<your-tos-url>'
+      };
+
+      // Initialize the FirebaseUI Widget using Firebase.
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      // The start method will wait until the DOM is loaded.
+      ui.start('#firebaseui-auth-container', uiConfig);
+    </script>
+    <style>
+      body {
+        background: #F5F5F5;
+      }
+      .toolbar {
+        height: 56px !important
+      }
+      
+      @media (min-width: 1200px) {
+        .container {
+          width: 1128px;
+          flex-basis: initial;
+        }
+      }      
+      .container {
+        padding-left: initial;
+        padding-right: initial;
+      } 
+      .content {
+        background: #F5F5F5;
+      }  
+      .mt-mod {
+        margin-top: 5rem !important;
+      }   
+      .button_area {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 56px;
+        padding: 0;
+        background-color: #efefef;
+        text-align: center;
+      }
+      .form-signin {
+        max-width: 330px;
+        margin: 100px auto;
+        background: #fff;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+      }
+      
+      .form-signin h2.form-signin-heading {
+        margin: 0;
+        padding: 20px 15px;
+        text-align: center;
+        background: #009688;
+        border-radius: 5px 5px 0 0;
+        -webkit-border-radius: 5px 5px 0 0;
+        color: #fff;
+        font-size: 18px;
+        text-transform: uppercase;
+        font-weight: 300;
+        font-family: 'Open Sans', sans-serif;
+      }      
+      .login-wrap {
+        padding: 20px;
+        position: relative;
+      }
+      
+      .user-login-info .form-control:last-child {
+        margin-bottom: 0 !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="page-content">
+        <v-toolbar fixed class="white accent-2">
+          <v-container>
+            <v-row>
+              <v-col xs8 md10>
+                <v-toolbar-title class="pa-0 teal--text">Eezii</v-toolbar-title>
+              </v-col>              
+            </v-row>
+          </v-container>
+        </v-toolbar>
+        <main class="pt-5">
+          <v-content class="pt-5">
+              <div class="form-signin">
+                <h2 class="form-signin-heading">sign in now</h2>
+                <div class="login-wrap">
+                  <div id="firebaseui-auth-container"></div>
+                </div>
+              </div>
+          </v-content>
+        </main>
+      </div>
+    </div>
+    <script src="https://unpkg.com/vue@2.2.1"></script>
+    <script src="https://unpkg.com/vuetify/dist/vuetify.min.js"></script>
+    <script>
+      new Vue({
+        el: '#app',
+        data: {
+          item: {
+            text: 'Get Started'
+          }
+        }
+      })
+    </script>
+  </body>
+
+</html>
