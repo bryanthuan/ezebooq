@@ -90,7 +90,7 @@
   import addOpeningHour from './_addOpeningHour'
   import addStaff from './_addStaff'
   import countries from '../../helpers/countries'
-  // import firebase from 'firebase'
+  import Firebase from '../../firebase'
   // import database from '../../database'
   // import auth from '../../auth'
   import { arrayDateToText, getWeekDayOption } from '../../helpers/handyFuncs' // getWeekDayOption
@@ -115,7 +115,6 @@
           return this.$store.state.business.city
         },
         set(value) {
-          // firebase.database().ref(`businesses/${this.$store.state.user.uid}`).child('city').set(value)
           this.$store.commit('updateBusinessCity', value)
         }
       },
@@ -125,7 +124,6 @@
         },
         set(value) {
           if (value !== '') {
-            // firebase.database().ref(`businesses/${this.$store.state.user.uid}`).child('address').set(value)
             this.$store.commit('updateBusinessAddress', value)
           }
         }
@@ -135,7 +133,6 @@
           return this.$store.state.business.country
         },
         set(value) {
-          // firebase.database().ref(`businesses/${this.$store.state.user.uid}`).child('country').set(value)
           this.$store.commit('updateBusinessCountry', value)
         }
       },
@@ -188,6 +185,22 @@
         // const parsedOp = JSON.parse(JSON.stringify(this.$store.state.opening_hours))
         // firebase.database().ref(userOpeningHourPath).set(parsedOp)
       }
+    },
+    created() {
+      Firebase.fetchServices(this.$store.state.user.uid)
+        .then((val) => {
+          this.$store.dispatch('initServices', val)
+          Firebase.fetchStaffs(this.$store.state.user.uid)
+          .then((val) => {
+            this.$store.commit('initStaffs', val)
+          })
+          .catch(() => {
+            this.$store.dispatch('addStaff')
+          })
+        })
+        .catch(() => {
+          this.$store.dispatch('addService')
+        })
     }
   }
 

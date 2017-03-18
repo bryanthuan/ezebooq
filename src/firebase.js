@@ -9,12 +9,9 @@ const database = firebase.database()
 // variable
 let _businessInfo = {}
 let _userInfo = {}
-// const _memos = {}
 let _businessRef = null
-// let _publicMemosRef = null
-// let _myMemosRef = null
-// let _fetchedPublicCount = 0
-// let _fetchedMyselfCount = 0
+let servicesRef = null
+let staffRef = null
 
 const initAuthUI = function initAuthUI () {
   // firebaseui is imported by script tag
@@ -51,9 +48,10 @@ export default {
 
   // Signs-in
   signIn () {
-    // // Sign in Firebase using popup auth and Google as the identity provider.
+    // Sign in Firebase using popup auth and Google as the identity provider.
     // var provider = new firebase.auth.GoogleAuthProvider()
     // auth.signInWithPopup(provider)
+    // Sign in by using auth ui instead of popup.
     initAuthUI()
   },
   // Signs-out
@@ -155,6 +153,75 @@ export default {
             resolve()
           }).catch(reject)
       }
+    })
+  },
+
+  fetchServices (uid) {
+    return new Promise((resolve, reject) => {
+      servicesRef = database.ref('services')
+      servicesRef.child(uid).once('value').then(snapshot => {
+        const temp = snapshot.val()
+        const services = Object.keys(temp).map(key => {
+          return {
+            'id': key,
+            'name': temp[key].name,
+            'price': temp[key].price,
+            'created_time': temp[key].created_time,
+            'updated_time': temp[key].updated_time,
+            's_touched': false,
+            'duration': temp[key].duration,
+            'description': temp[key].description
+          }
+        })
+        resolve(services)
+      }).catch(reject)
+    })
+  },
+  fetchStaffs (uid) {
+    return new Promise((resolve, reject) => {
+      staffRef = database.ref('staffs')
+      staffRef.child(uid).once('value').then(snapshot => {
+        const temp = snapshot.val()
+        const staffs = Object.keys(temp).map(key => {
+          // start rewriting firebase object
+          const ssv = _App.$store.state.services
+          // Firebase assignment is in object
+          const fbsv = temp[key].services
+          // We need to convert it to storagable array.
+          const arraySv = Object.keys(fbsv).map(skey => {
+            // Find this original service for this key
+            const hih = ssv.find(it => {
+              return it.id === skey
+            })
+            // New array element will be pushed.
+            return {
+              label: hih.name,
+              value: skey
+            }
+          })
+          // End rewrite firebase object
+          return {
+            'id': key,
+            'name': temp[key].name,
+            'services': arraySv || [],
+            'short_bio': temp[key].short_bio,
+            'created_time': temp[key].created_time,
+            'updated_time': temp[key].updated_time
+          }
+        })
+        resolve(staffs)
+      }).catch(reject)
+    })
+  },
+  fetchCategories () {
+    return new Promise((resolve, reject) => {
+      firebase.database().ref().once('value', snapshot => {
+        const cats = {
+          categories: snapshot.val().categories,
+          subcategories: snapshot.val().subcategories
+        }
+        resolve(cats)
+      }).catch(reject)
     })
   },
 

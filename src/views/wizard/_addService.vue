@@ -40,7 +40,7 @@
                             </v-col>
                             <v-col xs2 lg2 class="text-xs-right">
                                 <v-btn icon="icon" slot="activator" default @click.native="removeServiceForm(item.id)">
-                                    <v-icon>deconste</v-icon>
+                                    <v-icon>delete</v-icon>
                                 </v-btn>
                             </v-col>
                         </v-card-row>

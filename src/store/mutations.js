@@ -33,20 +33,11 @@ const mutations = {
   updateServiceNameTouched: (state, value) => {
     state.services[value.index].s_touched = value.s_touched
   },
-  initService: (state, value) => {
-    // let initService = {
-    //   // 'id': uniqid(),
-    //   // 'created_time': moment(),
-    //   // 'updated_time': moment(),
-    //   'price': 0,
-    //   'name': '',
-    //   's_touched': false,
-    //   'duration': {
-    //     'label': '1h',
-    //     'value': 3600000
-    //   },
-    //   'description': ''
-    // }
+  initServices: (state, value) => {
+    state.services = value
+  },
+  initStaffs: (state, value) => {
+    state.staffs = value
   },
   /** Update Service Price */
   updateServicePrice: (state, value) => {
@@ -126,8 +117,9 @@ const mutations = {
     state.user = value
   },
   // Update state categories
-  updateSubcategories: (state, value) => {
-    state.subcategories = value
+  updateCategories: (state, value) => {
+    state.subcategories = value.subcategories
+    state.categories = value.categories
   }
 }
 

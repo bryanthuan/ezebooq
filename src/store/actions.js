@@ -13,6 +13,10 @@ export default {
     commit('onAuthStateChanged', { user })
   },
 
+  initServices: ({ commit }, services) => {
+    commit('initServices', services)
+  },
+
   addService: ({ commit, state }) => {
     return new Promise((resolve, reject) => {
       const initSv = {

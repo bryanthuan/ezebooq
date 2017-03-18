@@ -35,9 +35,11 @@
           </v-row>
           <v-row>
             <v-col xs12>
-              <component v-bind:is="categoryList" :categories="categories" :subcategories="subcategories">
-                <!-- component changes when vm.categoryList changes! -->
-              </component>
+                <!-- component changes when vm.categoryList changes! 
+                <component v-bind:is="categoryList" :categories="categories" :subcategories="subcategories">
+                </component>
+                -->
+              <categoryList :categories="categories" :subcategories="subcategories"></categoryList>
             </v-col>
           </v-row>
         </v-container>
@@ -48,11 +50,7 @@
 
 <script>
   /* eslint-disable space-before-function-paren */
-  // UiTextbox
-  import firebase from 'firebase'
-  // import moment from 'moment'
-  // import database from '../../database'
-  // import auth from '../../auth'
+  import Firebase from '../../firebase'
   import categoryList from './_categoryList'
   export default {
     name: 'wizard',
@@ -62,34 +60,26 @@
     data () {
       return {
         category: '',
-        // user: firebase.auth().currentUser,
-        categories: {},
-        subcategories: {},
-        arr: [],
-        categoryList: ''
+        arr: []
       }
     },
     methods: {
       nextStep () {
-        // Init some first value here
-        this.$store.dispatch('addService').then((service) => {
-          // console.log('Hello')
-          // console.log(service)
-          // let initService = [{value: service.id, label: service.name}]
-          return this.$store.dispatch('addStaff', [])
-        }).then(() => {
-          this.$router.push('/wizard/details')
-        })
-        // Init Staff
+        this.$router.push('/wizard/details')
       }
     },
     computed: {
+      categories () {
+        return this.$store.state.categories
+      },
+      subcategories () {
+        return this.$store.state.subcategories
+      },
       name: {
         get() {
           return this.$store.state.business.name
         },
         set(value) {
-          // firebase.database().ref(`businesses/${this.$store.state.user.uid}`).child('name').set(value)
           this.$store.dispatch('updateBusinessName', value)
         }
       },
@@ -98,12 +88,11 @@
       }
     },
     created () {
-      firebase.database().ref().once('value', snapshot => {
-        this.categories = snapshot.val().categories
-        this.subcategories = snapshot.val().subcategories
-        this.$store.commit('updateSubcategories', this.subcategories)
-        this.categoryList = 'categoryList'
-      })
+      // Update global state categories for loading in wizard form
+      Firebase.fetchCategories()
+        .then(val => {
+          this.$store.commit('updateCategories', val)
+        })
     }
   }
 

@@ -18,6 +18,8 @@ const store = new Vuex.Store({
   state: {
     user: null,
     staffs: [],
+    subcategories: {},
+    categories: {},
     services: [],
     'opening_hours': [{
       'id': uniqid(),
